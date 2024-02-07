@@ -66,7 +66,11 @@ namespace fast_timer_load
         private Stopwatch _stopwatch = new Stopwatch();
         private async void OnStartTimer(object o)
         {
-            if (!_stopwatch.IsRunning)
+            if (_stopwatch.IsRunning)
+            {
+                OnResetTimer(o);
+            }
+            else
             {
                 _stopwatch.Restart();
                 OnePageState = OnePageState.Timer;
