@@ -68,7 +68,15 @@ namespace fast_timer_load
         {
             if (_stopwatch.IsRunning)
             {
-                OnResetTimer(o);
+                switch (OnePageState)
+                {
+                    case OnePageState.Main:
+                        OnePageState = OnePageState.Timer;
+                        break;
+                    case OnePageState.Timer:
+                        OnResetTimer(o);
+                        break;
+                }
             }
             else
             {
