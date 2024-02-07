@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:fast_timer_load"
+             x:Class="fast_timer_load.MainPage">
+    <ContentPage.BindingContext>
+        <local:MainPageBindingContext/>
+    </ContentPage.BindingContext>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:EnumToBoolConverter x:Key="EnumToBoolConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <Grid>
+        <ScrollView
+            IsVisible="{Binding
+                OnePageState, 
+                Converter={StaticResource EnumToBoolConverter}, 
+                ConverterParameter={x:Static local:OnePageState.Main}}">
+            <VerticalStackLayout
+                Spacing="25"
+                Padding="30,0"
+                VerticalOptions="Center">
+
+                <Image
+                    Source="dotnet_bot.png"
+                    SemanticProperties.Description="Cute dot net bot waving hi to you!"
+                    HeightRequest="200"
+                    HorizontalOptions="Center" />
+
+                <Label
+                    Text="Hello, World!"
+                    SemanticProperties.HeadingLevel="Level1"
+                    FontSize="32"
+                    HorizontalOptions="Center" />
+
+                <Label
+                    Text="Welcome to .NET Multi-platform App UI"
+                    SemanticProperties.HeadingLevel="Level2"
+                    SemanticProperties.Description="Welcome to dot net Multi platform App U I"
+                    FontSize="18"
+                    HorizontalOptions="Center" />
+
+                <Button
+                    x:Name="CounterBtn"
+                    Text="{Binding TimerDisplay}"
+                    SemanticProperties.Hint="Counts the number of times you click"
+                    HorizontalOptions="Center" 
+                    Command="{Binding StartTimerCommand}"/>
+
+            </VerticalStackLayout>
+        </ScrollView>
+        <Grid
+            IsVisible="{Binding
+                OnePageState, 
+                Converter={StaticResource EnumToBoolConverter}, 
+                ConverterParameter={x:Static local:OnePageState.Timer}}"
+            RowDefinitions="50,*,50"
+            BackgroundColor="MidnightBlue">
+            <HorizontalStackLayout
+                HorizontalOptions="Fill"
+                BackgroundColor="White">
+                <Button
+                    Text ="&lt;--- Main Page" 
+                    TextColor="CornflowerBlue"
+                    BackgroundColor="White"
+                    FontSize="Medium"
+                    HorizontalOptions="Start"
+                    Command="{Binding SetOnePageStateCommand}"
+                    CommandParameter="{x:Static local:OnePageState.Main}"/>
+            </HorizontalStackLayout>
+            <Label
+                Grid.Row="1"
+                Text="{Binding TimerDisplay}"
+                TextColor="White"
+                FontSize="48"
+                FontAttributes="Bold"
+                HorizontalOptions="Center"
+                VerticalOptions="Center"
+                HorizontalTextAlignment="Center"
+                VerticalTextAlignment="Center"
+                BackgroundColor="Transparent">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding StartTimerCommand}"/>
+                </Label.GestureRecognizers>
+            </Label>
+            <Grid
+                Grid.Row="2"
+                BackgroundColor="White">
+                <Button
+                    Text ="Reset" 
+                    TextColor="CornflowerBlue"
+                    BackgroundColor="White"
+                    FontSize="Medium"
+                    HorizontalOptions="CenterAndExpand"
+                    Command="{Binding ResetTimerCommand}"/>
+            </Grid>
+        </Grid>
+    </Grid>
+</ContentPage>
