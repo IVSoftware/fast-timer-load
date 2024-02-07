@@ -16,6 +16,25 @@ namespace fast_timer_load
         public MainPage()
         {
             InitializeComponent();
+            BindingContext.PropertyChanged += (sender, e) =>
+            {
+                switch(e.PropertyName) 
+                {
+                    case nameof(OnePageState):
+                        switch (BindingContext.OnePageState)
+                        {
+                            case OnePageState.Main:
+                                Shell.SetNavBarIsVisible(this, true);
+                                break;
+                            case OnePageState.Timer:
+                                Shell.SetNavBarIsVisible(this, false);
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                }
+            };
         }
         protected override bool OnBackButtonPressed()
         {
@@ -49,6 +68,7 @@ namespace fast_timer_load
         {
             if (!_stopwatch.IsRunning)
             {
+                _stopwatch.Restart();
                 OnePageState = OnePageState.Timer;
                 try
                 {
@@ -58,7 +78,6 @@ namespace fast_timer_load
                     }
                     _cts = new CancellationTokenSource();
                     var token = _cts.Token;
-                    _stopwatch.Restart();
                     while (!token.IsCancellationRequested)
                     {
                         var elapsed = _stopwatch.Elapsed;
@@ -101,7 +120,7 @@ namespace fast_timer_load
                 if (!Equals(_TimerDisplay, value))
                 {
                     _TimerDisplay = value;
-                    OnPropertyChanged();
+                    OnPropertyChanged(); 
                 }
             }
         }

@@ -1,11 +1,14 @@
-# fast-timer-load
+# Fast Timer Load
 
-You're describing some time-critical operations and I'd like to suggest a couple of optimizations to experiment with. The first is to avoid navigating using a OnePage architecture where views are overlapped on a common grid and the visibility is controlled by the value of `OnePageState`. This should give you very rapid switching from the main page view to what "looks like" a navigated page but really isn't. We start by making an `IValueConverter` class that returns `true` if two `enum` values are equal. Here, the default MAUI page now becomes invisible if the bound value of `OnePageState` is anything other than `OnePageState.Main`. Likewise, when the value becomes `OnePageState.Timer` the alternate virtual page becomes visible.
+For your time-critical operations I'd like to suggest a couple of optimizations to experiment with. The first is to avoid having to navigate to a new view. Use a OnePage architecture where views are overlapped on a common grid and the visibility is controlled by the value of `OnePageState`. This should give you very rapid switching from the main page view to what "looks like" a navigated page but really isn't. 
 
-I managed to take a screenshot that shows 66 ms but it switches faster than that on my Android 12 physical device.
+[![switching virtual views][1]][1]
 
+The second is to base your timing on a `Stopwatch` and use asynchronous Task.Delay calls to update the visible display. Even if it takes a few tens of ms to switch the view, the elapsed time begins at the moment the start command is invoked so it's still accounted for. You asked for perfect synchronization, and it's important to note that it won't reach the atomic precision of measuring time with nuclear isotopes but it's really not bad. _You mentioned having an older Android so I posted a [Clone](https://github.com/IVSoftware/fast-timer-load.git) on GitHub if you'd like to see how the performance is on your device._
 
-There's too much code to show here so I put an example in GitHub that you can [Clone]() if you like.
+___
+
+Start by making an `IValueConverter` class that returns `true` if two `enum` values are equal. Here, the default MAUI page now becomes invisible if the bound value of `OnePageState` is anything other than `OnePageState.Main`. Likewise, when the value becomes `OnePageState.Timer` the alternate virtual page becomes visible.
 ___
 
 **IValueConverter**
@@ -150,3 +153,5 @@ private async void OnStartTimer(object o)
 }
 ```
 
+
+  [1]: https://i.stack.imgur.com/I2FXD.png
