@@ -43,6 +43,8 @@ namespace fast_timer_load
         public ICommand SetOnePageStateCommand { get; private set; }
         public ICommand ResetTimerCommand { get; private set; }
 
+        Task _pollingTask;
+        private Stopwatch _stopwatch = new Stopwatch();
         private async void OnStartTimer(object o)
         {
             if (!_stopwatch.IsRunning)
@@ -78,7 +80,6 @@ namespace fast_timer_load
                 }
             }
         }
-        Task _pollingTask;
         private void OnSetOnePageState(OnePageState context)
         {
             OnePageState = context;
@@ -91,7 +92,6 @@ namespace fast_timer_load
             TimerDisplay = "Start Timer";
         }
 
-        private Stopwatch _stopwatch = new Stopwatch();
         CancellationTokenSource _cts = null;
         public string TimerDisplay
         {

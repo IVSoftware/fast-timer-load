@@ -6,12 +6,16 @@
     <ContentPage.BindingContext>
         <local:MainPageBindingContext/>
     </ContentPage.BindingContext>
+    
     <ContentPage.Resources>
         <ResourceDictionary>
+            <!--Controls visibility by converting enum value to bool-->
             <local:EnumToBoolConverter x:Key="EnumToBoolConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
-    <Grid>
+
+    <!--Maui Default Virtual Page-->
+    <Grid x:Name="OnePageGrid">
         <ScrollView
             IsVisible="{Binding
                 OnePageState, 
@@ -50,6 +54,8 @@
 
             </VerticalStackLayout>
         </ScrollView>
+        
+        <!--Timer Virtual Page-->
         <Grid
             IsVisible="{Binding
                 OnePageState, 
