@@ -93,13 +93,10 @@ namespace fast_timer_load
                     while (!token.IsCancellationRequested)
                     {
                         var elapsed = _stopwatch.Elapsed;
-                        MainThread.BeginInvokeOnMainThread(() =>
-                        {
                             TimerDisplay =
                                 elapsed < TimeSpan.FromSeconds(1) ?
                                 elapsed.ToString(@"hh\:mm\:ss\.ff") :
                                 elapsed.ToString(@"hh\:mm\:ss");
-                        });
                         await Task.Delay(TimeSpan.FromSeconds(0.1), token);
                     }
                 }
